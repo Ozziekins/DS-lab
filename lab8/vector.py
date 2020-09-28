@@ -43,11 +43,13 @@ def process_a(pipe_ab):
     pid = 0
     # initialize counter to all 0
     counter = [0, 0, 0]
-    counter = event(pid, counter)
+    counter = send_message(pipe_ab, pid, counter)
     counter = send_message(pipe_ab, pid, counter)
     counter = event(pid, counter)
     counter = recv_message(pipe_ab, pid, counter)
     counter = event(pid, counter)
+    counter = event(pid, counter)
+    counter = recv_message(pipe_ab, pid, counter)
     print("Process a " + format(counter))
 
 # process b
@@ -57,9 +59,13 @@ def process_b(pipe_ba, pipe_bc):
     # initialize counter to all 0
     counter = [0, 0, 0]
     counter = recv_message(pipe_ba, pid, counter)
+    counter = recv_message(pipe_ba, pid, counter)
+    counter = send_message(pipe_ba, pid, counter)
+    counter = recv_message(pipe_bc, pid, counter)
+    counter = event(pid, counter)
     counter = send_message(pipe_ba, pid, counter)
     counter = send_message(pipe_bc, pid, counter)
-    counter = recv_message(pipe_bc, pid, counter)
+    counter = send_message(pipe_bc, pid, counter)
     print("Process b " + format(counter))
 
 # process c
@@ -68,8 +74,10 @@ def process_c(pipe_cb):
     pid = 2
     # initialize counter to all 0
     counter = [0, 0, 0]
-    counter = recv_message(pipe_cb, pid, counter)
     counter = send_message(pipe_cb, pid, counter)
+    counter = recv_message(pipe_cb, pid, counter)
+    counter = event(pid, counter)
+    counter = recv_message(pipe_cb, pid, counter)
     print("Process c " + format(counter))
 
 
